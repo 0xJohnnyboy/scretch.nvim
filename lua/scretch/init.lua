@@ -1,7 +1,7 @@
 local api = vim.api
 
 local config = {
-    scretch_dir = vim.fn.stdpath('config') .. '/plugin/scretch/',
+    scretch_dir = vim.fn.stdpath('config') .. '/plugin/.scretch/',
     default_name = "scretch_",
     default_type = "txt",
     split_cmd = "vsplit",
@@ -17,6 +17,7 @@ local config = {
 
 local function setup(user_config)
     config = vim.tbl_deep_extend("keep", config, user_config or {})
+    vim.fn.mkdir(config.scretch_dir, "p")
     -- Enregistre les mappings
     for action, mapping in pairs(config.mappings) do
         vim.api.nvim_set_keymap("n", mapping, string.format("<cmd>Scretch %s<CR>", action),
@@ -24,7 +25,6 @@ local function setup(user_config)
     end
 end
 
-vim.fn.mkdir(config.scretch_dir, "p")
 
 -- creates a new scretch file in the scretch directory.
 local function new()
