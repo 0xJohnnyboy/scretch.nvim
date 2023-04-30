@@ -16,7 +16,7 @@ command! -nargs=* Scretch call s:scratch_command(<q-args>)
 command! -nargs=* -complete=customlist,s:scratch_commands Scretch call s:scratch_command(<f-args>)
 
 function! s:scratch_commands(arglead, cmdline, cursorpos)
-  let commands = ['new', 'new_named', 'search', 'grep', 'explore']
+  let commands = ['new', 'new_named', 'last', 'search', 'grep', 'explore']
   return filter(commands, 'v:val =~ "^" . a:arglead')
 endfunction
 

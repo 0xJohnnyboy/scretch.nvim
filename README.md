@@ -48,6 +48,7 @@ local config = {
     mappings = {
         new = "<leader>sn", -- creates a new unnamed scretch
         new_named = "<leader>snn", -- prompts you with a name to create a named scretch (you have to provide the extension)
+        last = "<leader>sl", -- toggles a split with the last scretch opened
         search = "<leader>ss", -- performs a fuzzy find accross Scretch directory
         grep = "<leader>sg", -- live greps accross Scretch directory
         explore = "<leader>sv", -- opens explorer for easy file mgmt in Scretch directory
