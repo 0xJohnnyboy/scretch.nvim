@@ -2,6 +2,19 @@
 
 Scretch is a plugin to easily create and manage scratch files, called scretch 🙂.
 
+## Features
+### New scretch
+
+https://user-images.githubusercontent.com/49813786/235376581-4bc28110-a75f-4b29-bf75-07ae10e5a8a3.mov
+
+### New named scretch
+
+https://user-images.githubusercontent.com/49813786/235376612-328159ff-4209-4bc0-b21d-fcb742861a41.mov
+
+### Search, grep, and explore scretches !
+
+https://user-images.githubusercontent.com/49813786/235376626-6b23bf7e-def1-4d4b-bfa0-ea22e7ba3e61.mov
+
 # Installation
 
 This plugin requires Telescope and ripgrep to function.
