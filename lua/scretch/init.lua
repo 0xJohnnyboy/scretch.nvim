@@ -1,7 +1,7 @@
 local api = vim.api
 
 local config = {
-    scretch_dir = vim.fn.stdpath('config') .. '/plugin/.scretch/',
+    scretch_dir = vim.fn.stdpath('config') .. '/scretch/',
     default_name = "scretch_",
     default_type = "txt",
     split_cmd = "vsplit",
