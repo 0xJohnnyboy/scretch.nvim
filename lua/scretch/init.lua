@@ -50,10 +50,16 @@ end
 
 -- performs a fuzzy find accross scretch files
 local function search()
+    local find_command = {}
+    if vim.fn.executable("rg") == 1 then
+        find_command = { 'rg', '--files', '--hidden', '-g', '*' }
+    else
+        find_command = { 'find', '.', '-type', 'f', '-not', '-path', '"./git/*"' }
+    end
     require('telescope.builtin').find_files({
         prompt_title = "Scretch Files",
         cwd = config.scretch_dir,
-        find_command = { 'rg', '--files', '--hidden', '-g', '*' },
+        find_command = find_command,
     })
 end
 
