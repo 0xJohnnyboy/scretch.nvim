@@ -1,30 +1,16 @@
 local api = vim.api
 
 local config = {
-    scretch_dir = vim.fn.stdpath('config') .. '/plugin/.scretch/',
+    scretch_dir = vim.fn.stdpath('config') .. '/scretch/',
     default_name = "scretch_",
     default_type = "txt",
     split_cmd = "vsplit",
-    mappings = {
-        new = "<leader>sn",
-        new_named = "<leader>snn",
-        last = "<leader>sl",
-        search = "<leader>ss",
-        grep = "<leader>sg",
-        explore = "<leader>sv",
-    },
 }
 
 local function setup(user_config)
     config = vim.tbl_deep_extend("keep", config, user_config or {})
     vim.fn.mkdir(config.scretch_dir, "p")
-    -- Enregistre les mappings
-    for action, mapping in pairs(config.mappings) do
-        vim.api.nvim_set_keymap("n", mapping, string.format("<cmd>Scretch %s<CR>", action),
-            { noremap = true, silent = true })
-    end
 end
-
 
 -- creates a new scretch file in the scretch directory.
 local function new()
@@ -50,10 +36,16 @@ end
 
 -- performs a fuzzy find accross scretch files
 local function search()
+    local find_command = {}
+    if vim.fn.executable("rg") == 1 then
+        find_command = { 'rg', '--files', '--hidden', '-g', '*' }
+    else
+        find_command = { 'find', '.', '-type', 'f', '-not', '-path', '"./git/*"' }
+    end
     require('telescope.builtin').find_files({
         prompt_title = "Scretch Files",
         cwd = config.scretch_dir,
-        find_command = { 'rg', '--files', '--hidden', '-g', '*' },
+        find_command = find_command,
     })
 end
 
@@ -69,7 +61,7 @@ end
 
 -- opens the explorer in the scretch directory
 local function explore()
-    api.nvim_command("Ex " .. config.scretch_dir)
+    api.nvim_command("edit " .. config.scretch_dir)
 end
 
 -- returns the path of the most recently modified file in the given directory.

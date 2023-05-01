@@ -38,24 +38,29 @@ use {
 ```
 
 # Configuration
-Here are the default settings used in Scretch
+
+Here are the default settings used in Scretch:
 ```lua
 local config = {
     scretch_dir = vim.fn.stdpath('config') .. '/plugin/scretch/', -- will be created if it doesn't exist
     default_name = "scretch_",
     default_type = "txt", -- default unnamed Scretches are named "scretch_*.txt"
     split_cmd = "vsplit", -- vim split command used when creating a new Scretch
-    mappings = {
-        new = "<leader>sn", -- creates a new unnamed scretch
-        new_named = "<leader>snn", -- prompts you with a name to create a named scretch (you have to provide the extension)
-        last = "<leader>sl", -- toggles a split with the last scretch opened
-        search = "<leader>ss", -- performs a fuzzy find accross Scretch directory
-        grep = "<leader>sg", -- live greps accross Scretch directory
-        explore = "<leader>sv", -- opens explorer for easy file mgmt in Scretch directory
-    },
 }
 ```
 You can copy those settings, update them with your preferences and put them into the setup function to load them.
+
+## Suggested mappings
+
+```lua
+local scretch = require("scretch")
+vim.keymap.set('n', '<leader>sn', scretch.new)
+vim.keymap.set('n', '<leader>snn', scretch.new_named)
+vim.keymap.set('n', '<leader>sl', scretch.last)
+vim.keymap.set('n', '<leader>ss', scretch.search)
+vim.keymap.set('n', '<leader>sg', scretch.grep)
+vim.keymap.set('n', '<leader>sv', scretch.explore)
+```
 
 # Issues
 
