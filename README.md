@@ -1,6 +1,6 @@
 # Introduction
 
-Scretch is a plugin to easily create and manage scratch files, called scretch 🙂.
+Scretch.nvim is a plugin to easily create and manage scratch files 🙂.
 
 ## Features
 ### New scretch
@@ -19,13 +19,14 @@ https://user-images.githubusercontent.com/49813786/235376626-6b23bf7e-def1-4d4b-
 
 This plugin requires Telescope and ripgrep to function.
 
-If you don't have ripgrep installed, I recommend you go check the installation procedure [here](https://github.com/BurntSushi/ripgrep#installation)
+If you don't have ripgrep installed, I recommend you go check the installation procedure [here](https://github.com/BurntSushi/ripgrep#installation).
+If you don't want to install it, it should fall back to `find`.
 
 You can paste the following code using Packer, or adapt to your favorite package manager:
 
 ```lua
 use {
-  "Sonicfury/scretch",
+  "Sonicfury/scretch.nvim",
   requires = 'nvim-telescope/telescope.nvim',
   config = function()
     require("scretch").setup {
@@ -42,7 +43,7 @@ use {
 Here are the default settings used in Scretch:
 ```lua
 local config = {
-    scretch_dir = vim.fn.stdpath('config') .. '/plugin/scretch/', -- will be created if it doesn't exist
+    scretch_dir = vim.fn.stdpath('config') .. '/scretch/', -- will be created if it doesn't exist
     default_name = "scretch_",
     default_type = "txt", -- default unnamed Scretches are named "scretch_*.txt"
     split_cmd = "vsplit", -- vim split command used when creating a new Scretch
