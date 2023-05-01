@@ -5,26 +5,12 @@ local config = {
     default_name = "scretch_",
     default_type = "txt",
     split_cmd = "vsplit",
-    mappings = {
-        new = "<leader>sn",
-        new_named = "<leader>snn",
-        last = "<leader>sl",
-        search = "<leader>ss",
-        grep = "<leader>sg",
-        explore = "<leader>sv",
-    },
 }
 
 local function setup(user_config)
     config = vim.tbl_deep_extend("keep", config, user_config or {})
     vim.fn.mkdir(config.scretch_dir, "p")
-    -- Enregistre les mappings
-    for action, mapping in pairs(config.mappings) do
-        vim.api.nvim_set_keymap("n", mapping, string.format("<cmd>Scretch %s<CR>", action),
-            { noremap = true, silent = true })
-    end
 end
-
 
 -- creates a new scretch file in the scretch directory.
 local function new()
