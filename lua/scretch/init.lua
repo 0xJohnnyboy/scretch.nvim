@@ -69,7 +69,7 @@ end
 
 -- opens the explorer in the scretch directory
 local function explore()
-    api.nvim_command("Ex " .. config.scretch_dir)
+    api.nvim_command("edit " .. config.scretch_dir)
 end
 
 -- returns the path of the most recently modified file in the given directory.
