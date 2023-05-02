@@ -17,7 +17,7 @@ https://user-images.githubusercontent.com/49813786/235376626-6b23bf7e-def1-4d4b-
 
 # Installation
 
-This plugin requires Telescope and ripgrep to function.
+This plugin requires Telescope or fzf-lua and ripgrep to function.
 
 If you don't have ripgrep installed, I recommend you go check the installation procedure [here](https://github.com/BurntSushi/ripgrep#installation).
 If you don't want to install it, it should fall back to `find`.
@@ -28,6 +28,8 @@ You can paste the following code using Packer, or adapt to your favorite package
 use {
   "Sonicfury/scretch.nvim",
   requires = 'nvim-telescope/telescope.nvim',
+  -- or
+  -- requires = 'ibhagwan/fzf-lua' ,
   config = function()
     require("scretch").setup {
       -- your configuration comes here
@@ -47,6 +49,7 @@ local config = {
     default_name = "scretch_",
     default_type = "txt", -- default unnamed Scretches are named "scretch_*.txt"
     split_cmd = "vsplit", -- vim split command used when creating a new Scretch
+    backend = "telescope.builtin" -- also accpets "fzf-lua"
 }
 ```
 You can copy those settings, update them with your preferences and put them into the setup function to load them.
