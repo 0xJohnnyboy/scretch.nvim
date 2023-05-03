@@ -34,9 +34,10 @@ local function new_named()
     api.nvim_command(config.split_cmd .. ' ' .. scretch_name)
 end
 
-local function get_search_args(backend)
+-- performs a fuzzy find across scretch files
+local function search()
     local default_args = { cwd = config.scretch_dir }
-    if backend == "telescope.builtin" then
+    if config.backend == "telescope.builtin" then
         local find_command
 
         if vim.fn.executable("rg") == 1 then
@@ -49,36 +50,31 @@ local function get_search_args(backend)
             prompt_title = "Scretch Files",
             find_command = find_command,
         }))
-    elseif backend == "fzf-lua" then
+    elseif config.backend == "fzf-lua" then
         return require('fzf-lua').files(vim.tbl_deep_extend("force", default_args,{
             prompt = "Scretch Files> ",
         }))
     end
 end
 
--- performs a fuzzy find across scretch files
-local function search()
-    get_search_args(config.backend)
+local function get_grep_args(backend, query)
+    
 end
 
-local function get_grep_args(backend, query)
+-- performs a live grep accross scretch files
+local function grep(query)
     local default_args = { cwd = config.scretch_dir }
-    if backend == "telescope.builtin" then
+    if config.backend == "telescope.builtin" then
         return require('telescope.builtin').live_grep(vim.tbl_deep_extend("force", default_args,{
             prompt_title = "Scretch Search",
             search_dirs = { config.scretch_dir },
             live_grep_args = { '--hidden', '-g', '*', query },
         }))
-    elseif backend == "fzf-lua" then
+    elseif config.backend == "fzf-lua" then
         return require("fzf-lua").live_grep(vim.tbl_deep_extend("force", default_args,{
             prompt = "Scretch Search>",
         }))
     end
-end
-
--- performs a live grep accross scretch files
-local function grep(query)
-    get_grep_args(config.backend, query)
 end
 
 -- opens the explorer in the scretch directory
