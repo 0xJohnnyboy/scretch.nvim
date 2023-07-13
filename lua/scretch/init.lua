@@ -1,5 +1,3 @@
-local api = vim.api
-
 local config = {
     scretch_dir = vim.fn.stdpath('config') .. '/scretch/',
     default_name = "scretch_",
@@ -26,12 +24,13 @@ end
 
 -- creates a new named scretch file in the scretch directory.
 local function new_named()
-    local scretch_name = vim.fn.input('Scretch name: ')
-    if scretch_name == '' then
-        return
-    end
-    scretch_name = config.scretch_dir .. scretch_name
-    api.nvim_command(config.split_cmd .. ' ' .. scretch_name)
+    vim.ui.input({ prompt = 'Scretch name: ' }, function(scretch_name)
+        if scretch_name == '' then
+            return
+        end
+        scretch_name = config.scretch_dir .. scretch_name
+        vim.cmd(config.split_cmd .. ' ' .. scretch_name)
+    end)
 end
 
 -- performs a fuzzy find across scretch files
@@ -79,7 +78,7 @@ end
 
 -- opens the explorer in the scretch directory
 local function explore()
-    api.nvim_command("edit " .. config.scretch_dir)
+    vim.cmd.edit(config.scretch_dir)
 end
 
 -- returns the path of the most recently modified file in the given directory.
@@ -88,8 +87,9 @@ local function get_most_recent_file(dir)
     local most_recent_modification_time = 0
     for _, file in ipairs(vim.fn.readdir(dir)) do
         local file_path = dir .. file
-        if vim.fn.getftype(file_path) == "file" then
-            local modification_time = vim.loop.fs_stat(file_path).mtime.sec
+        local file_stats = vim.loop.fs_stat(file_path)
+        if file_stats.type == "file" then
+            local modification_time = file_stats.mtime.sec
             if modification_time > most_recent_modification_time then
                 most_recent_file = file_path
                 most_recent_modification_time = modification_time
@@ -103,7 +103,7 @@ end
 local function last()
     local last_file = get_most_recent_file(config.scretch_dir)
     if not last_file then
-        print("No scretch file found.")
+        vim.notify("No scretch file found.", vim.log.levels.ERROR)
         return
     end
     local current_bufnr = vim.fn.bufnr('')
