@@ -21,8 +21,6 @@ You can save any buffer as a Scretch template. It'll be saved in the default dir
 You can also search and edit templates with Telescope or Fzf-Lua, and create a new Scretch from a template.
 See [suggested mappings](#suggested-mappings).
 
-⚠️ Fzf-lua is not supported right now for creating a Scretch from a template. A workaround would be to edit the template and save it to the location you want using `:w /path/to/your/desired/location`
-
 # Installation
 
 This plugin requires Telescope or fzf-lua and ripgrep to function.

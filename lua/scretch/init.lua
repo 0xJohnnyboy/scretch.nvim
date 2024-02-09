@@ -159,7 +159,6 @@ local function new_from_template()
                                     new_scretch_file:write(line .. '\n')
                                 end
                                 new_scretch_file:close()
-                                -- vim.cmd('edit ' .. new_scretch_path)
                                 vim.api.nvim_command(":e! " .. new_scretch_path)
                             else
                                 print('Error opening file for writing: ' .. new_scretch_path)
@@ -173,8 +172,34 @@ local function new_from_template()
             end,
         })
     elseif config.backend == "fzf-lua" then
-        -- todo : new scretch from template with fzf-lua
-        print('Not implemented')
+        require('fzf-lua').files({
+            prompt = "New Scretch from Template > ",
+            cwd = config.template_dir,
+            actions = {
+                ["default"] = function(selected)
+                    local new_scretch_name = vim.fn.input('Enter new Scretch name: ')
+                    if new_scretch_name ~= '' then
+                        local new_scretch_path = config.scretch_dir .. new_scretch_name
+                        local template_content = vim.fn.readfile(selected[1].path)
+
+                        if template_content then
+                            local new_scretch_file = io.open(new_scretch_path, 'w')
+                            if new_scretch_file then
+                                for _, line in ipairs(template_content) do
+                                    new_scretch_file:write(line .. '\n')
+                                end
+                                new_scretch_file:close()
+                                vim.api.nvim_command(':e! ' .. new_scretch_path)
+                            else
+                                print('Error creating new Scretch file: ' .. new_scretch_path)
+                            end
+                        else
+                            print('Error reading template file: ' .. template_path)
+                        end
+                    end
+                end,
+            },
+        })
     end
 end
 
