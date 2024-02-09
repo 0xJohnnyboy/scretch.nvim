@@ -15,6 +15,14 @@ https://user-images.githubusercontent.com/49813786/235376612-328159ff-4209-4bc0-
 
 https://user-images.githubusercontent.com/49813786/235376626-6b23bf7e-def1-4d4b-bfa0-ea22e7ba3e61.mov
 
+### Templates
+
+You can save any buffer as a Scretch template. It'll be saved in the default directory if none is explicitely provided in the config.
+You can also search and edit templates with Telescope or Fzf-Lua, and create a new Scretch from a template.
+See [suggested mappings](#suggested-mappings).
+
+⚠️ Fzf-lua is not supported right now for creating a Scretch from a template. A workaround would be to edit the template and save it to the location you want using `:w /path/to/your/desired/location`
+
 # Installation
 
 This plugin requires Telescope or fzf-lua and ripgrep to function.
@@ -46,6 +54,7 @@ Here are the default settings used in Scretch:
 ```lua
 local config = {
     scretch_dir = vim.fn.stdpath('config') .. '/scretch/', -- will be created if it doesn't exist
+    templte_dir = vim.fn.stdpath('data') .. '/scretch/templates', -- will be created if it doesn't exist
     default_name = "scretch_",
     default_type = "txt", -- default unnamed Scretches are named "scretch_*.txt"
     split_cmd = "vsplit", -- vim split command used when creating a new Scretch
@@ -60,10 +69,13 @@ You can copy those settings, update them with your preferences and put them into
 local scretch = require("scretch")
 vim.keymap.set('n', '<leader>sn', scretch.new)
 vim.keymap.set('n', '<leader>snn', scretch.new_named)
+vim.keymap.set('n', '<leader>sft', scretch.new_from_template)
 vim.keymap.set('n', '<leader>sl', scretch.last)
 vim.keymap.set('n', '<leader>ss', scretch.search)
+vim.keymap.set('n', '<leader>st', scretch.edit_template)
 vim.keymap.set('n', '<leader>sg', scretch.grep)
 vim.keymap.set('n', '<leader>sv', scretch.explore)
+vim.keymap.set('n', '<leader>sat', scretch.save_as_template)
 ```
 
 # Issues
