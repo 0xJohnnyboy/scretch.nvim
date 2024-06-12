@@ -32,7 +32,7 @@ You can paste the following code using Packer, or adapt to your favorite package
 
 ```lua
 use {
-  "Sonicfury/scretch.nvim",
+  "0xJohnnyboy/scretch.nvim",
   requires = 'nvim-telescope/telescope.nvim',
   -- or
   -- requires = 'ibhagwan/fzf-lua' ,
