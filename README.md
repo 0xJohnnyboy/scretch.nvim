@@ -52,7 +52,7 @@ Here are the default settings used in Scretch:
 ```lua
 local config = {
     scretch_dir = vim.fn.stdpath('config') .. '/scretch/', -- will be created if it doesn't exist
-    templte_dir = vim.fn.stdpath('data') .. '/scretch/templates', -- will be created if it doesn't exist
+    template_dir = vim.fn.stdpath('data') .. '/scretch/templates', -- will be created if it doesn't exist
     default_name = "scretch_",
     default_type = "txt", -- default unnamed Scretches are named "scretch_*.txt"
     split_cmd = "vsplit", -- vim split command used when creating a new Scretch
