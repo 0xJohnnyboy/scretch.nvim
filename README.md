@@ -31,13 +31,29 @@ If you don't want to install it, it should fall back to `find`.
 You can paste the following code using Packer, or adapt to your favorite package manager:
 
 ```lua
+// Lazy
+{
+  '0xJohnnyboy/scretch.nvim',
+  dependencies = { 'nvim-telescope/telescope.nvim' },
+  -- or
+  -- dependencies = { 'ibhagwan/fzf-lua' },
+  config = function()
+    require('scretch').setup({
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+    })
+  end,
+},
+
+// Packer
 use {
-  "0xJohnnyboy/scretch.nvim",
+  '0xJohnnyboy/scretch.nvim',
   requires = 'nvim-telescope/telescope.nvim',
   -- or
   -- requires = 'ibhagwan/fzf-lua' ,
   config = function()
-    require("scretch").setup {
+    require('scretch').setup {
       -- your configuration comes here
       -- or leave it empty to use the default settings
       -- refer to the configuration section below
