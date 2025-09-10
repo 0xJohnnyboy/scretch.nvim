@@ -1,0 +1,297 @@
+*scretch.txt*	Plugin for creating and managing scratch files
+
+Author: Théo LAMBERT <https://github.com/0xjohnnyboy>
+License: AGPL-3.0
+
+==============================================================================
+CONTENTS						*scretch* *scretch-contents*
+
+1. Introduction				|scretch-introduction|
+2. Requirements				|scretch-requirements|
+3. Installation				|scretch-installation|
+4. Configuration			|scretch-configuration|
+5. Commands				|scretch-commands|
+6. Functions				|scretch-functions|
+7. Modes				|scretch-modes|
+8. Examples				|scretch-examples|
+
+==============================================================================
+INTRODUCTION					*scretch-introduction*
+
+Scretch.nvim is a plugin to easily create and manage scratch files. It allows
+you to quickly create temporary files for notes, experiments, or drafts, with
+support for templates and both global and project-scoped organization.
+
+Key features:
+• Quick creation of numbered scratch files
+• Named scratch files with custom names  
+• Template system for reusable file structures
+• Project-local or global file organization
+• Integration with Telescope or fzf-lua for file management
+• Search and grep functionality across scratch files
+
+==============================================================================
+REQUIREMENTS					*scretch-requirements*
+
+• Neovim 0.5+
+• One of the following:
+  - telescope.nvim (https://github.com/nvim-telescope/telescope.nvim)
+  - fzf-lua (https://github.com/ibhagwan/fzf-lua)
+• Optional: ripgrep for enhanced search (falls back to find)
+
+==============================================================================
+INSTALLATION					*scretch-installation*
+
+Using lazy.nvim: >
+    {
+      '0xJohnnyboy/scretch.nvim',
+      dependencies = { 'nvim-telescope/telescope.nvim' },
+      -- or dependencies = { 'ibhagwan/fzf-lua' },
+      config = function()
+        require('scretch').setup({
+          -- your configuration here
+        })
+      end,
+    }
+<
+
+Using packer.nvim: >
+    use {
+      '0xJohnnyboy/scretch.nvim',
+      requires = 'nvim-telescope/telescope.nvim',
+      -- or requires = 'ibhagwan/fzf-lua',
+      config = function()
+        require('scretch').setup{}
+      end
+    }
+<
+
+==============================================================================
+CONFIGURATION					*scretch-configuration*
+
+Call `require('scretch').setup(config)` with a configuration table.
+All settings are optional and will use defaults if not specified.
+
+Default configuration: >
+    require('scretch').setup({
+      scretch_dir = vim.fn.stdpath('data') .. '/scretch/',
+      template_dir = vim.fn.stdpath('data') .. '/scretch/templates/',
+      use_project_dir = {
+        auto_create_project_dir = false,
+        scretch = false,
+        scretch_project_dir = '.scretch/',
+        template = false,
+        template_project_dir = '.scretch/templates/',
+      },
+      default_name = 'scretch_',
+      default_type = 'txt',
+      split_cmd = 'vsplit',
+      backend = 'telescope.builtin'
+    })
+<
+
+Configuration options:
+
+*scretch_dir*		string
+			Path to global scratch files directory.
+			Default: `vim.fn.stdpath('data') .. '/scretch/'`
+
+*template_dir*		string  
+			Path to global templates directory.
+			Default: `vim.fn.stdpath('data') .. '/scretch/templates/'`
+
+*use_project_dir*	table
+			Configuration for project-local directories.
+
+  *auto_create_project_dir*	boolean
+			Automatically create project directories when needed.
+			Default: `false`
+
+  *scretch*		string|boolean
+			Project mode for scratch files:
+			- `false`: Always use global directory
+			- `true`: Always use project directory  
+			- `'auto'`: Use project if exists, else global
+			Default: `false`
+
+  *scretch_project_dir*	string
+			Relative path for project scratch files.
+			Default: `'.scretch/'`
+
+  *template*		string|boolean
+			Project mode for templates (same options as scretch).
+			Default: `false`
+
+  *template_project_dir* string
+			Relative path for project templates.
+			Default: `'.scretch/templates/'`
+
+*default_name*		string
+			Prefix for auto-generated scratch file names.
+			Default: `'scretch_'`
+
+*default_type*		string
+			File extension for auto-generated scratch files.
+			Default: `'txt'`
+
+*split_cmd*		string
+			Vim command used when opening new scratch files.
+			Options: 'split', 'vsplit', 'tabnew', 'edit'
+			Default: `'vsplit'`
+
+*backend*		string
+			Fuzzy finder backend to use.
+			Options: 'telescope.builtin', 'fzf-lua'
+			Default: `'telescope.builtin'`
+
+==============================================================================
+COMMANDS					*scretch-commands*
+
+:Scretch					*:Scretch*
+			Create a new numbered scratch file (calls |scretch.new()|)
+
+:Scretch {function}				
+			Call any scretch function by name.
+			Tab completion available for all function names.
+			Example: `:Scretch search` calls |scretch.search()|
+
+==============================================================================
+FUNCTIONS					*scretch-functions*
+
+All functions are available via `require('scretch').{function_name}()`
+
+File Creation Functions:
+
+scretch.new()					*scretch.new()*
+			Create a new auto-numbered scratch file.
+			Files are named `{default_name}{number}.{default_type}`
+			Opens in a new split using |scretch_split_cmd|.
+
+scretch.new_named()				*scretch.new_named()*
+			Create a new scratch file with custom name.
+			Prompts for filename input.
+			Opens in a new split using |scretch_split_cmd|.
+
+scretch.new_from_template()			*scretch.new_from_template()*
+			Create a new scratch file from a template.
+			Opens fuzzy finder to select template, then prompts
+			for new filename. Copies template content to new file.
+
+File Management Functions:
+
+scretch.search()				*scretch.search()*
+			Open fuzzy finder to search and open scratch files.
+			Uses configured |scretch_backend|.
+
+scretch.grep({query})				*scretch.grep()*
+			Live grep search across scratch file contents.
+			Uses configured |scretch_backend|.
+			Optional {query} parameter for initial search term.
+
+scretch.last()					*scretch.last()*
+			Open the most recently modified scratch file.
+			Does nothing if current buffer is already the last file.
+
+scretch.explore()				*scretch.explore()*
+			Open file explorer in the scratch directory.
+
+Template Functions:
+
+scretch.save_as_template()			*scretch.save_as_template()*
+			Save current buffer content as a template.
+			Prompts for template name.
+
+scretch.edit_template()				*scretch.edit_template()*
+			Open fuzzy finder to search and edit templates.
+			Uses configured |scretch_backend|.
+
+Mode Control Functions:
+
+scretch.scretch_use_global_mode()		*scretch.scretch_use_global_mode()*
+			Force scratch files to use global directory.
+
+scretch.scretch_use_project_mode()		*scretch.scretch_use_project_mode()*
+			Force scratch files to use project directory.
+			Creates directory if it doesn't exist.
+
+scretch.scretch_use_auto_mode()			*scretch.scretch_use_auto_mode()*
+			Use project directory if exists, else global.
+			Resets any forced mode settings.
+
+scretch.template_use_global_mode()		*scretch.template_use_global_mode()*
+			Force templates to use global directory.
+
+scretch.template_use_project_mode()		*scretch.template_use_project_mode()*
+			Force templates to use project directory.
+			Creates directory if it doesn't exist.
+
+scretch.template_use_auto_mode()		*scretch.template_use_auto_mode()*
+			Use project templates if directory exists, else global.
+			Resets any forced mode settings.
+
+==============================================================================
+MODES						*scretch-modes*
+
+Scretch supports three directory modes for both scratch files and templates:
+
+*Global Mode*
+Files are stored in the configured global directories:
+- Scratch files: `~/.local/share/nvim/scretch/` (by default)
+- Templates: `~/.local/share/nvim/scretch/templates/` (by default)
+
+*Project Mode* 
+Files are stored in project-local directories:
+- Scratch files: `.scretch/` in current working directory
+- Templates: `.scretch/templates/` in current working directory
+
+*Auto Mode*
+Automatically chooses between project and global:
+- If project directory exists, use it
+- Otherwise, fall back to global directory
+
+Mode priority (highest to lowest):
+1. Runtime mode functions (scretch_use_*_mode())
+2. Configuration settings (use_project_dir.scretch/template)  
+3. Global directory (fallback)
+
+==============================================================================
+EXAMPLES					*scretch-examples*
+
+Basic setup with Telescope: >
+    require('scretch').setup({
+      backend = 'telescope.builtin',
+      split_cmd = 'vsplit'
+    })
+<
+
+Project-focused setup: >
+    require('scretch').setup({
+      use_project_dir = {
+        auto_create_project_dir = true,
+        scretch = 'auto',
+        template = 'auto',
+      },
+      default_type = 'md'  -- Markdown scratch files
+    })
+<
+
+Suggested key mappings: >
+    local s = require('scretch')
+    vim.keymap.set('n', '<leader>sn', s.new)
+    vim.keymap.set('n', '<leader>snn', s.new_named)  
+    vim.keymap.set('n', '<leader>sft', s.new_from_template)
+    vim.keymap.set('n', '<leader>sl', s.last)
+    vim.keymap.set('n', '<leader>ss', s.search)
+    vim.keymap.set('n', '<leader>st', s.edit_template)
+    vim.keymap.set('n', '<leader>sg', s.grep)
+    vim.keymap.set('n', '<leader>sv', s.explore)
+    vim.keymap.set('n', '<leader>sat', s.save_as_template)
+    
+    -- Mode switching
+    vim.keymap.set('n', '<leader>smsp', s.scretch_use_project_mode)
+    vim.keymap.set('n', '<leader>smsa', s.scretch_use_auto_mode)
+    vim.keymap.set('n', '<leader>smsg', s.scretch_use_global_mode)
+<
+
+==============================================================================
+vim:tw=78:ts=8:ft=help:norl:
