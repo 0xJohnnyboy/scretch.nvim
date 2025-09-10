@@ -1,4 +1,4 @@
-*scretch.txt*	Plugin for creating and managing scratch files
+*scretch.txt*	*scretch*	Plugin for creating and managing scratch files
 
 Author: Théo LAMBERT <https://github.com/0xjohnnyboy>
 License: AGPL-3.0
@@ -107,7 +107,7 @@ Configuration options:
 			Automatically create project directories when needed.
 			Default: `false`
 
-  *scretch*		string|boolean
+  scretch		string|boolean
 			Project mode for scratch files:
 			- `false`: Always use global directory
 			- `true`: Always use project directory  
