@@ -4,7 +4,6 @@ backend	scretch.txt	/*backend*
 default_name	scretch.txt	/*default_name*
 default_type	scretch.txt	/*default_type*
 scretch	scretch.txt	/*scretch*
-scretch	scretch.txt	/*scretch*
 scretch-commands	scretch.txt	/*scretch-commands*
 scretch-configuration	scretch.txt	/*scretch-configuration*
 scretch-contents	scretch.txt	/*scretch-contents*

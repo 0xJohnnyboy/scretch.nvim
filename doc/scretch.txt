@@ -4,7 +4,7 @@ Author: Théo LAMBERT <https://github.com/0xjohnnyboy>
 License: AGPL-3.0
 
 ==============================================================================
-CONTENTS						*scretch* *scretch-contents*
+CONTENTS						*scretch-contents*
 
 1. Introduction				|scretch-introduction|
 2. Requirements				|scretch-requirements|
