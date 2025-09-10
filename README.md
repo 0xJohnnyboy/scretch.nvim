@@ -126,6 +126,17 @@ You can use the mappings above, or directly call any function with
 :Scretch <function>
 ```
 
+For detailed documentation including configuration options, all available functions, and examples:
+
+```vim
+:h scretch
+```
+
+You can also jump directly to specific sections:
+- `:h scretch-configuration` - Configuration options  
+- `:h scretch-functions` - All available functions
+- `:h scretch-modes` - Understanding global/project/auto modes
+
 # Issues
 
 Feel free to open issues if you have a suggestion or encounter a bug. Be kind !
