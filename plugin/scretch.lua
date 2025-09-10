@@ -1,6 +1,6 @@
 -- Title:        Scretch
 -- Description:  A plugin to create and manage scratch files.
--- Maintainer:   Théo LAMBERT <https://github.com/Sonicfury>
+-- Maintainer:   Théo LAMBERT <https://github.com/0xjohnnyboy>
 
 local function ScretchCompletion(lead, cmd, cursor)
     local valid_args = vim.tbl_keys(require('scretch'))
