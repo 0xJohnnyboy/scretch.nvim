@@ -5,15 +5,15 @@ Scretch.nvim is a plugin to easily create and manage scratch files 🙂.
 ## Features
 ### New scretch
 
-https://user-images.githubusercontent.com/49813786/235376581-4bc28110-a75f-4b29-bf75-07ae10e5a8a3.mov
+https://github.com/user-attachments/assets/0fcb1c48-28fe-4ba9-bfc7-231bf8a19459
 
 ### New named scretch
 
-https://user-images.githubusercontent.com/49813786/235376612-328159ff-4209-4bc0-b21d-fcb742861a41.mov
+https://github.com/user-attachments/assets/35e5e860-b578-4f35-beca-c14e9a0468da
 
 ### Search, grep, and explore scretches !
 
-https://user-images.githubusercontent.com/49813786/235376626-6b23bf7e-def1-4d4b-bfa0-ea22e7ba3e61.mov
+https://github.com/user-attachments/assets/467bdaeb-8c6b-4134-8f18-c651a3f60d74
 
 ### Templates
 
