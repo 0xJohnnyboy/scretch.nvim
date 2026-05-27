@@ -89,12 +89,58 @@ local config = {
     default_name = "scretch_",
     default_type = "txt", -- default unnamed Scretches are named "scretch_*.txt"
     split_cmd = "vsplit", -- vim split command used when creating a new Scretch
-    backend = "telescope.builtin" -- also accpets "fzf-lua"
+    backend = "telescope.builtin", -- also accpets "fzf-lua"
+    template_variables = {
+        enabled = true,
+        date = {
+            enabled = true,
+            value = "now",
+            default_format = "YYYY-MM-dd",
+        },
+        title = {
+            enabled = true,
+            source = "filename",
+        },
+        author = {
+            enabled = true,
+            source = "shell", -- shell | git | literal
+            value = "",
+        },
+        custom = {
+            -- project = function(ctx) return vim.fn.fnamemodify(ctx.cwd, ":t") end,
+        },
+    },
 }
 ```
 You can copy those settings, update them with your preferences and put them into the setup function to load them.
 
 If your're considering using the project_dir feature, you should add the project_dir to your `.gitignore` (`.scretch` being the default value).
+
+## Template variables
+
+Template variables are rendered when creating a note with `new_from_template()`.
+They are not rendered when saving templates.
+
+Syntax:
+
+```txt
+{{ variable }}
+{{ variable | uppercase }}
+{{ date | format:YYYY/MM/dd }}
+```
+
+Built-in variables:
+- `title`: target file name without extension
+- `date`: current date/time
+- `author`: resolved from config (`shell`, `git`, or `literal`)
+
+Built-in filters:
+- `uppercase`
+- `lowercase`
+- `trim`
+- `format:<pattern>` (mainly for `date`)
+
+On unknown variable/filter or render error, Scretch replaces with an empty string and sends a warning via `vim.notify` (visible in `:messages`).
 
 ## Suggested mappings
 

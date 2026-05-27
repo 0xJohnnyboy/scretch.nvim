@@ -86,7 +86,25 @@ Default configuration: >
       default_name = 'scretch_',
       default_type = 'txt',
       split_cmd = 'vsplit',
-      backend = 'telescope.builtin'
+      backend = 'telescope.builtin',
+      template_variables = {
+        enabled = true,
+        date = {
+          enabled = true,
+          value = 'now',
+          default_format = 'YYYY-MM-dd',
+        },
+        title = {
+          enabled = true,
+          source = 'filename',
+        },
+        author = {
+          enabled = true,
+          source = 'shell', -- shell | git | literal
+          value = '',
+        },
+        custom = {},
+      },
     })
 <
 
@@ -144,6 +162,52 @@ Configuration options:
 			Options: 'telescope.builtin', 'fzf-lua'
 			Default: `'telescope.builtin'`
 
+*template_variables*	table
+			Template variable rendering configuration.
+			Rendered only in |scretch.new_from_template()|.
+
+  *enabled*		boolean
+			Enable/disable variable rendering globally.
+			Default: `true`
+
+  *date*		table
+			Date variable config.
+  *date.enabled*		boolean
+			Enable/disable `{{ date }}`.
+			Default: `true`
+  *date.value*		string
+			`'now'` or a literal date string.
+			Default: `'now'`
+  *date.default_format*	string
+			Default date format (supports YYYY MM dd HH mm ss).
+			Default: `'YYYY-MM-dd'`
+
+  *title*		table
+			Title variable config.
+  *title.enabled*		boolean
+			Enable/disable `{{ title }}`.
+			Default: `true`
+  *title.source*		string
+			Currently `'filename'` (without extension).
+			Default: `'filename'`
+
+  *author*		table
+			Author variable config.
+  *author.enabled*		boolean
+			Enable/disable `{{ author }}`.
+			Default: `true`
+  *author.source*		string
+			`'shell'`, `'git'`, or `'literal'`.
+			Default: `'shell'`
+  *author.value*		string
+			Used when source is `'literal'`.
+			Default: `''`
+
+  *custom*		table<string,function>
+			Custom variable functions:
+			`custom.myvar = function(ctx) return 'value' end`
+			`ctx` includes file paths, title, cwd, and timestamp.
+
 ==============================================================================
 COMMANDS					*scretch-commands*
 
@@ -176,6 +240,7 @@ scretch.new_from_template()			*scretch.new_from_template()*
 			Create a new scratch file from a template.
 			Opens fuzzy finder to select template, then prompts
 			for new filename. Copies template content to new file.
+			Renders template variables if enabled.
 
 File Management Functions:
 
@@ -272,6 +337,21 @@ Project-focused setup: >
         template = 'auto',
       },
       default_type = 'md'  -- Markdown scratch files
+    })
+<
+
+Template variables: >
+    require('scretch').setup({
+      template_variables = {
+        author = {
+          source = 'git',
+        },
+        custom = {
+          project = function(ctx)
+            return vim.fn.fnamemodify(ctx.cwd, ':t')
+          end,
+        },
+      },
     })
 <
 
