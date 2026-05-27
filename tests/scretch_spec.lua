@@ -169,6 +169,39 @@ with_module(function(t)
 end)
 
 with_module(function(t)
+    t.fs["/tmp/nvim-data/scretch/a.txt"] = { type = "file", mtime = { sec = 10 } }
+    t.fs["/tmp/nvim-data/scretch/b.txt"] = { type = "file", mtime = { sec = 20 } }
+    t.set_current_file("/tmp/nvim-data/scretch/a.txt")
+    t.module.last()
+    assert_eq(t.cmds[#t.cmds], "vsplit /tmp/nvim-data/scretch/b.txt", "last should open most recent file")
+end)
+
+with_module(function(t)
+    t.module.last()
+    assert_truthy(#t.notifications >= 1, "last should notify when no file is present")
+end)
+
+with_module(function(t)
+    local captured = nil
+    package.loaded["fzf-lua"] = {
+        files = function(opts)
+            captured = opts
+        end
+    }
+    t.module.setup({
+        backend = "fzf-lua",
+        use_project_dir = {
+            template = false,
+            template_project_dir = ".scretch/templates/",
+        }
+    })
+    t.module.template_use_project_mode()
+    t.module.edit_template()
+    assert_truthy(captured ~= nil, "edit_template should call configured backend")
+    assert_eq(captured.cwd, "/tmp/scretch-tests/.scretch/templates/", "project mode should force project template dir")
+end)
+
+with_module(function(t)
     t.set_input("")
     t.module.new_named()
     assert_eq(#t.cmds, 0, "new_named should no-op on empty input")

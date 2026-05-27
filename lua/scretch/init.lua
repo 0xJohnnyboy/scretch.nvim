@@ -359,7 +359,7 @@ local function get_most_recent_file(dir)
     for _, file in ipairs(vim.fn.readdir(dir)) do
         local file_path = dir .. file
         local file_stats = vim.loop.fs_stat(file_path)
-        if file_stats.type == "file" then
+        if file_stats and file_stats.type == "file" then
             local modification_time = file_stats.mtime.sec
             if modification_time > most_recent_modification_time then
                 most_recent_file = file_path
