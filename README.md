@@ -183,6 +183,9 @@ You can also jump directly to specific sections:
 - `:h scretch-functions` - All available functions
 - `:h scretch-modes` - Understanding global/project/auto modes
 
+# Related
+Scretch.nvim with the new template variables integrates well with [`vo`](https://github.com/0xJohnnyboy/voyage) and [voyage.nvim](https://github.com/0xJohnnyboy/voyage.nvim) for a lightweight zettelkasten-like note taking. workflow. These let you browse note relations by wikilinks, tags or categories.
+
 # Issues
 
 Feel free to open issues if you have a suggestion or encounter a bug. Be kind !
