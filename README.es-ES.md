@@ -1,3 +1,5 @@
+[Inglés](README.md) | Español
+
 # Introducción
 
 Scretch.nvim es un plugin para crear y gestionar archivos temporales (scratch files) fácilmente 🙂.
