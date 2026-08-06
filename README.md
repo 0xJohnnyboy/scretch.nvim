@@ -1,3 +1,5 @@
+English | [Spanish](README.es-ES.md)
+
 # Introduction
 
 Scretch.nvim is a plugin to easily create and manage scratch files 🙂.
