@@ -54,7 +54,7 @@ local function get_scretch_dir()
 
     -- Auto mode base on settings
     if config.use_project_dir.scretch == true then
-        if config.use_project.dir.auto_create_project_dir then
+        if config.use_project_dir.auto_create_project_dir then
             vim.fn.mkdir(project_scretch, 'p')
         end
         return project_scretch
@@ -81,7 +81,7 @@ local function get_template_dir()
 
     -- Auto mode base on settings
     if config.use_project_dir.template == true then
-        if config.use_project.dir.auto_create_project_dir then
+        if config.use_project_dir.auto_create_project_dir then
             vim.fn.mkdir(project_template, 'p')
         end
         return project_template
