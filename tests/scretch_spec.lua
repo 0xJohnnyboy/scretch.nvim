@@ -150,6 +150,8 @@ local function with_module(test_fn)
         notifications = notifications,
         fs = fs,
         files = files,
+        cwd = cwd,
+        created_dirs = created_dirs,
         set_input = function(v) input_value = v end,
         set_current_file = function(v) current_file = v end,
     }
@@ -199,6 +201,61 @@ with_module(function(t)
     t.module.edit_template()
     assert_truthy(captured ~= nil, "edit_template should call configured backend")
     assert_eq(captured.cwd, "/tmp/scretch-tests/.scretch/templates/", "project mode should force project template dir")
+end)
+
+with_module(function(t)
+    local project_dir = ".project-scretches/"
+    local expected_dir = t.cwd .. "/" .. project_dir
+    t.module.setup({
+        use_project_dir = {
+            auto_create_project_dir = true,
+            scretch = true,
+            scretch_project_dir = project_dir,
+        }
+    })
+    t.module.new()
+    assert_eq(t.cmds[#t.cmds], "vsplit " .. expected_dir .. "scretch_1.txt",
+        "project scretch dir should be relative to cwd")
+    assert_truthy(t.created_dirs[expected_dir], "enabled project scretch dir should be created")
+end)
+
+with_module(function(t)
+    local captured = nil
+    local project_dir = ".project-templates/"
+    local expected_dir = t.cwd .. "/" .. project_dir
+    package.loaded["fzf-lua"] = {
+        files = function(opts)
+            captured = opts
+        end
+    }
+    t.module.setup({
+        backend = "fzf-lua",
+        use_project_dir = {
+            auto_create_project_dir = true,
+            template = true,
+            template_project_dir = project_dir,
+        }
+    })
+    t.module.edit_template()
+    assert_truthy(captured ~= nil, "edit_template should call configured backend")
+    assert_eq(captured.cwd, expected_dir, "project template dir should be relative to cwd")
+    assert_truthy(t.created_dirs[expected_dir], "enabled project template dir should be created")
+end)
+
+with_module(function(t)
+    local project_dir = ".existing-scretches/"
+    local expected_dir = t.cwd .. "/" .. project_dir
+    t.module.setup({
+        use_project_dir = {
+            auto_create_project_dir = false,
+            scretch = true,
+            scretch_project_dir = project_dir,
+        }
+    })
+    t.module.new()
+    assert_eq(t.cmds[#t.cmds], "vsplit " .. expected_dir .. "scretch_1.txt",
+        "project scretch dir should still be selected when auto-create is disabled")
+    assert_eq(t.created_dirs[expected_dir], nil, "disabled auto-create should not create project dir")
 end)
 
 with_module(function(t)
