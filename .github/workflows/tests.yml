@@ -1,0 +1,29 @@
+name: Tests
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tests-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  lua-tests:
+    name: Lua tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout pull request
+        uses: actions/checkout@v7.0.1
+
+      - name: Install stable Neovim
+        uses: rhysd/action-setup-vim@v1.6.1
+        with:
+          neovim: true
+
+      - name: Run tests
+        run: nvim --headless -u NONE -l tests/run.lua
